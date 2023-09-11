@@ -1,0 +1,27 @@
+dependencies {
+    implementation project(':usecase')
+    implementation project(':exception')
+    implementation project(':homologator')
+
+    compileOnly 'org.springframework:spring-context'
+    testImplementation project(':model').sourceSets.test.output
+
+    implementation "co.com.bancolombia.d2b:web-client:$D2BSDKVersion"
+    implementation "co.com.bancolombia.d2b:apic-creds-injector:$D2BSDKVersion"
+    implementation "co.com.bancolombia.d2b:cognito-creds-injector:$D2BSDKVersion"
+    implementation "co.com.bancolombia.d2b:apic-creds-jwt-injector:$D2BSDKVersion"
+    implementation "co.com.bancolombia.d2b:raven-fixed:$D2BSDKVersion"
+    implementation "co.com.bancolombia.d2b:cache:$D2BSDKVersion"
+
+    implementation "co.com.bancolombia:technical-log:$technicalLogVersion"
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: "${log4j2Version}"
+
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    compileOnly 'org.springframework.boot:spring-boot-starter-webflux'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
+    testImplementation("com.squareup.okhttp3:mockwebserver:$OkHttp3Version")
+    testImplementation("com.squareup.okhttp3:okhttp:$OkHttp3Version")
+    testImplementation("io.github.hakky54:logcaptor:$LogCaptorVersion")
+    testImplementation("org.mockito:mockito-inline:$mockitoInLineVersion")
+
+}

@@ -1,0 +1,26 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation project(':exception')
+    implementation project(':homologator')
+
+    api project(':model')
+    testImplementation project(':model').sourceSets.test.output
+
+    compileOnly 'org.springframework:spring-context'
+    compileOnly 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation "com.lowagie:itext:$itextVersion"
+    implementation ("net.sourceforge.dynamicreports:dynamicreports-core:$dynamicReportsVersion") {
+        exclude group: 'org.apache.ant', module: 'ant'
+    }
+    implementation "org.apache.ant:ant:$apacheAntVersion"
+    implementation "org.apache.xmlgraphics:batik-transcoder:$batikTranscoderVersion"
+    implementation "org.apache.xmlgraphics:batik-codec:$batikCodecVersion"
+    implementation "co.com.bancolombia.d2b:s3-gateway:$D2BSDKVersion"
+    implementation "javax.xml.bind:jaxb-api:$jaxbVersion"
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+

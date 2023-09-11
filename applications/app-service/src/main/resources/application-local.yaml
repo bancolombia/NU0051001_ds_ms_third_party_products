@@ -1,0 +1,122 @@
+server:
+  port: ${APP_PORT:8090}
+
+spring:
+  application:
+    name: ${APP_NAME:ds_ms_third_party_products}
+  webflux:
+    base-path: ${BASE_PATH:/api/v1/third-party-products}
+  devtools:
+    add-properties: false
+
+springdoc:
+  version: ${MS_VERSION:1.0.0}
+  swagger-ui:
+    path: ${SWAGGER_PATH:doc/swagger-ui.html}
+
+logging:
+  config: classpath:org/springframework/boot/logging/log4j2/log4j2.xml
+  level:
+    root: ${LOG4J_LEVEL:INFO}
+
+management:
+  endpoint:
+    health:
+      show-details: ${SHOW_DETAILS:always}
+
+settings:
+  pagination:
+    default-page-size: "10"
+    default-page-number: "1"
+
+d2b:
+  application-code: ${APP_CODE_JWT:NU0051001}
+  aws:
+    secrets-manager:
+      region: us-east-1
+      endpoint: http://localhost:4566
+    s3:
+      region: us-east-1
+      endpoint: http://localhost:4566
+      force-path-style: true
+  integration:
+    jwt-audience: ${APIC_AUDIENCE:APIGateway_LAN}
+  cache:
+    memory:
+      expireTime: ${CACHE_EXPIRE_TIME:30}
+      maxSize: ${CACHE_MAX_SIZE:1000}
+    productTypesCacheTtl: 120
+    bankEntitiesCacheTtl: 120
+  secrets:
+    apic: nu0051001-d2b-local-banking-core-dbb
+    rabbitmq: nu0051001-d2b-local-rabbitmq-engagement-dbb
+    cognito: nu0051001-d2b-local-cognito-dbb
+    postgresql: nu0051001-d2b-local-postgres-ds-ms-third-party-products-dbb
+    digital-certificate: nu0051001-d2b-local-digital-certificate-apic-dbb
+  auth:
+    cognito:
+      grantType: client_credentials
+      scope: api.d2b.com/channel-management
+      endpoint: https://digital-distribution-dev.auth.us-east-1.amazoncognito.com/oauth2/token
+  web-client:
+    apic-jwt:
+      headerMappings:
+        certificate: ${HEADER_JWT_CERTIFICATE:X-client-certificate}
+        json-web-token: ${HEADER_JWT_TOKEN:json-web-token}
+      delete-headers-certificate: ${HEADERS_CERTIFICATE_DELETE:false}
+adapter:
+  rest-consumer:
+    channel-management:
+      baseUrl: https://distribucion-digital-internal-qa.apps.ambientesbc.com/digital-distribution/api/v1/channel-management
+      parameterPath: /parameter/by
+      documentTypesPath: /document
+      transactionCode: 100
+      parameterName: inscripcionProductosTerceros
+      timeout: 5000
+    deposits:
+      baseUrl: https://gw-depositos.apps.ocpqa.ambientesbc.lab/private-bancolombia/testing/v1/operations/product-specific/deposits/accounts
+      validationAccount: /belonging
+      timeout: 5000
+    mdm:
+      baseUrl: https://gw-mdm-qa.apps.ambientesbc.lab/private-bancolombia/testing/v1/sales-services/customer-management/customer-reference-data-management/customer-personal-data
+      basicInformation: /retrieve-basic-information
+      timeout: 5000
+    payments:
+      baseUrl: http://demo4718369.mockable.io/
+      registerBeneficiaryOthersBanks: /operations/cross-product/payments/ach-fulfillment/register-beneficiary-others-banks
+      payrollAndSupplierPayment: /sales-services/customer/payroll-and-supplier-payment/beneficiaries
+      enrollNequiAccount: /operations/cross-product/payments/interbank-transfers-operation/account-management/enroll-Nequi-Account
+      timeout: 5000
+    ach:
+      baseUrl: http://demo4565645.mockable.io
+      listBankEntities: /banks
+      timeout: 5000
+  channel: dbb
+  notification:
+    alertTransactionId: '1'
+    productEnrollmentTransactionAlertCode: '1'
+    productModificationTransactionAlertCode: '2'
+    valueChargeForSendingNotifications: '0'
+    channelNameForSendingNotifications: DIGITAL BANKING BY BANCOLOMBIA
+report:
+  fields:
+    productsEnrolledInformation: ${PRODUCTS_ENROLLED_INFORMATION:{
+      "id":"Identificador",
+      "name":"Nombre",
+      "state":"Estado",
+      "number":"Nombre",
+      "type":"Tipo",
+      "entity":"Entidad",
+      "inscriptionDate":"Fecha de Inscripción",
+      "functionList":"Lista de Funciones",
+      "customerId":"Cliente",
+      "beneficiary":"Beneficiario",
+      "additionalData":"Datos Adicionales"
+      }}
+  format:
+    date: ${REPORT_FORMAT_DATE:dd-MM-yyyy}
+    number: ${REPORT_FORMAT_NUMBER:#.#############}
+    pageIndex: ${REPORT_PAGE_INDEX:Página {0} de {1}}
+  filename:
+    productsEnrolled: ${PRODUCTS_ENROLLED_FILENAME:productsEnrolled}
+  cloudName: ${REPORT_CLOUD_NAME:local-bucket}

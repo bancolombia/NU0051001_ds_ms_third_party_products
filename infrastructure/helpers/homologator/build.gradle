@@ -1,0 +1,7 @@
+dependencies {
+    implementation project(':model')
+
+    implementation "co.com.bancolombia.d2b:raven-fixed:$D2BSDKVersion"
+    compileOnly 'org.springframework:spring-context'
+    compileOnly 'org.springframework.boot:spring-boot-starter-webflux'
+}

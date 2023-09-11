@@ -1,0 +1,51 @@
+buildscript {
+    ext {
+        cleanArchitectureVersion = '3.0.3'
+        springBootVersion = '3.0.6'
+        sonarVersion = '4.0.0.2929'
+        jacocoVersion = '0.8.8'
+        lombokVersion = '1.18.26'
+        springDocVersion = '1.6.13'
+        technicalLogVersion = '1.2.3'
+        log4j2Version = '2.20.0'
+        springCoreVersion = '6.0.4'
+        D2BSDKVersion = '2.0.0'
+        OkHttp3Version = '4.9.3'
+        LogCaptorVersion = '2.9.0'
+        validationLibVersion = '2.0.1.Final'
+        r2dbcPostgresqlVersion = '0.8.10.RELEASE'
+        r2dbcH2Version = '0.8.4.RELEASE'
+        bancolombiaSecretManagerVersion = '3.0.0'
+        itextVersion = '4.2.2'
+        dynamicReportsVersion = '6.12.1'
+        apacheAntVersion = '1.10.8'
+        batikTranscoderVersion = '1.16'
+        batikCodecVersion = '1.16'
+        jaxbVersion = '2.3.1'
+        mockitoInLineVersion = '2.13.0'
+    }
+}
+
+plugins {
+    id 'co.com.bancolombia.cleanArchitecture' version "${cleanArchitectureVersion}"
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'org.sonarqube' version "${sonarVersion}"
+    id 'jacoco'
+}
+
+sonarqube {
+    def modules = subprojects.projectDir.collect { "${it.toString().replace(project.projectDir.toString() + "/", "")}" }
+    properties {
+        property "sonar.sourceEnconding", "UTF-8"
+        property "sonar.modules", "${modules.join(',')}"
+        property "sonar.sources", "src,deployment,settings.gradle,main.gradle,build.gradle,${modules.collect { "${it}/build.gradle" }.join(',')}"
+        property "sonar.exclusions", "**/MainApplication.java"
+        property "sonar.test", "src/test"
+        property "sonar.java.binaries", ""
+        property "sonar.junit.reportsPath", ""
+        property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml"
+    }
+}
+
+apply from: './main.gradle'
